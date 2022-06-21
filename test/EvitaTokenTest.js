@@ -3,12 +3,20 @@ const { ethers } = require("hardhat");
 const hre = require("hardhat");
 
 describe("EvitaToken", function () {
-  it("Should test something", async function () {
+  let token;
+
+  beforeEach(async function () {
     const EvitaToken = await hre.ethers.getContractFactory("EvitaToken");
-    const token = await EvitaToken.deploy(111);
-
+    token = await EvitaToken.deploy(111);
     await token.deployed();
+  });
 
-    expect(await token.totalSupply()).to.equal(ethers.utils.parseEther('111'));
+  it("Should mint total supply", async function () {
+    expect(await token.totalSupply()).to.equal(ethers.utils.parseEther("111"));
+  });
+
+  it("Should burn tokens", async function () {
+    token.burn(ethers.utils.parseEther("1"));
+    expect(await token.totalSupply()).to.equal(ethers.utils.parseEther("110"));
   });
 });
