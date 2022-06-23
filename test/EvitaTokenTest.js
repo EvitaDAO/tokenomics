@@ -31,7 +31,7 @@ describe("EvitaToken", function () {
 
   describe("Burning", function () {
     it("Should burn owner tokens", async function () {
-      token.burn(ethers.utils.parseEther("1"));
+      await token.burn(ethers.utils.parseEther("1"));
       const ownerBalance = await token.balanceOf(owner.address);
       expect(ownerBalance).to.equal(ethers.utils.parseEther("110"));
       expect(await token.totalSupply()).to.equal(
