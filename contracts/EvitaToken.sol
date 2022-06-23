@@ -10,13 +10,14 @@ contract EvitaToken is ERC20BurnableUpgradeable, OwnableUpgradeable {
     string public name_;
     string public symbol_;
 
-    // todo in 2: move to init
-    constructor(uint256 _initialSupply)
-    /* ERC20BurnableUpgradeable("Evita", "EVI") */
+    IERC20Upgradeable public token;
+
+    function initialize(IERC20Upgradeable _token, uint256 _initialSupply)
+        public
+        initializer
     {
-        name_ = "Evita";
-        symbol_ = "EVI";
-        _transferOwnership(msg.sender);
+        token = _token;
+        allSupply = _initialSupply;
         _mint(msg.sender, _initialSupply * 10**decimals());
     }
 
