@@ -1,8 +1,10 @@
-require("@nomiclabs/hardhat-waffle");
+require('@nomiclabs/hardhat-waffle');
+require('@openzeppelin/hardhat-upgrades');
+require('@nomiclabs/hardhat-truffle5');
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
 
   for (const account of accounts) {
@@ -17,17 +19,17 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-    solidity: {
-        version: "0.8.14",
-        settings: {
-            optimizer: {
-                enabled: true,
-                runs: 10_000,
-            },
-        },
+  solidity: {
+    version: '0.8.14',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 10_000,
+      },
     },
+  },
 
-    mocha: {
-        timeout: 180000,
-    },
+  mocha: {
+    timeout: 180000,
+  },
 };
