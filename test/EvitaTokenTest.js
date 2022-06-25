@@ -5,11 +5,16 @@ describe('EvitaToken', function () {
   let token;
   let owner;
   let user1;
+  const initialSupply = 111;
 
   beforeEach(async function () {
     const EvitaToken = await ethers.getContractFactory('EvitaToken');
     [owner, user1] = await ethers.getSigners();
-    token = await EvitaToken.deploy(111);
+    token = await upgrades.deployProxy(EvitaToken, [
+      'Evita',
+      'EVI',
+      initialSupply,
+    ]);
   });
 
   describe('Deployment', function () {
@@ -19,7 +24,7 @@ describe('EvitaToken', function () {
 
     it('Should mint total supply', async function () {
       expect(await token.totalSupply()).to.equal(
-        ethers.utils.parseEther('111')
+        ethers.utils.parseEther(`${initialSupply}`)
       );
     });
 
@@ -31,21 +36,30 @@ describe('EvitaToken', function () {
 
   describe('Burning', function () {
     it('Should burn owner tokens', async function () {
-      await token.burn(ethers.utils.parseEther('1'));
+      const etherToBurn = 5;
+      await token.burn(ethers.utils.parseEther(`${etherToBurn}`));
       const ownerBalance = await token.balanceOf(owner.address);
-      expect(ownerBalance).to.equal(ethers.utils.parseEther('110'));
-      expect(await token.totalSupply()).to.equal(
-        ethers.utils.parseEther('110')
+      expect(ownerBalance).to.equal(
+        ethers.utils.parseEther(`${initialSupply - etherToBurn}`)
       );
     });
 
     it('Should burn user tokens', async function () {
-      await token.transfer(user1.address, ethers.utils.parseEther('5'));
-      await token.connect(user1).burn(ethers.utils.parseEther('1'));
+      const etherToTransfer = 5;
+      const etherToBurn = 2;
+      await token.transfer(
+        user1.address,
+        ethers.utils.parseEther(`${etherToTransfer}`)
+      );
+      await token
+        .connect(user1)
+        .burn(ethers.utils.parseEther(`${etherToBurn}`));
       const userBalance = await token.balanceOf(user1.address);
-      expect(userBalance).to.equal(ethers.utils.parseEther('4'));
+      expect(userBalance).to.equal(
+        ethers.utils.parseEther(`${etherToTransfer - etherToBurn}`)
+      );
       expect(await token.totalSupply()).to.equal(
-        ethers.utils.parseEther('110')
+        ethers.utils.parseEther(`${initialSupply - etherToBurn}`)
       );
     });
   });
