@@ -34,6 +34,38 @@ describe('EvitaToken', () => {
     });
   });
 
+  describe('Minting', () => {
+    it('Should mint ether to owner', async () => {
+      const etherToMint = 7;
+      await token.mint(
+        owner.address,
+        ethers.utils.parseEther(`${etherToMint}`)
+      );
+      const ownerBalance = await token.balanceOf(owner.address);
+      expect(ownerBalance).to.equal(
+        ethers.utils.parseEther(`${initialSupply + etherToMint}`)
+      );
+    });
+  });
+
+  describe('Sending', () => {
+    it('Should send ether from owner to other user', async () => {
+      const transferAmount = 8;
+      const userInitialBalance = await token.balanceOf(user1.address);
+      const ownerInitialBalance = await token.balanceOf(owner.address);
+      // This one fails with Error 'ERC20: insufficient allowance'
+      await token.transferFrom(
+        owner.address,
+        user1.address,
+        ethers.utils.parseEther(`${transferAmount}`)
+      );
+      const userFinalBalance = await token.balanceOf(user1.address);
+      const ownerFinallBalance = await token.balanceOf(owner.address);
+      expect(userFinalBalance).not.equal(userInitialBalance);
+      expect(ownerFinallBalance).not.equal(ownerInitialBalance);
+    });
+  });
+
   describe('Burning', () => {
     it('Should burn owner tokens', async () => {
       const etherToBurn = 5;
