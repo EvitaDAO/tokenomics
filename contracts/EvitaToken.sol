@@ -7,17 +7,15 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
 
 contract EvitaToken is ERC20BurnableUpgradeable, OwnableUpgradeable {
-    string public name_;
-    string public symbol_;
-
-    IERC20Upgradeable public token;
-
-    function initialize(IERC20Upgradeable _token, uint256 _initialSupply)
-        public
-        initializer
-    {
-        token = _token;
-        allSupply = _initialSupply;
+    function initialize(
+        string memory name_,
+        string memory symbol_,
+        uint256 _initialSupply
+    ) public initializer {
+        __Ownable_init(); // OwnableUpgradeable
+        __ERC20Burnable_init(); // ERC20BurnableUpgradeable
+        __ERC20_init(name_, symbol_); // ERC20Upgradeable
+        __Context_init(); // ContextUpgradeable
         _mint(msg.sender, _initialSupply * 10**decimals());
     }
 
