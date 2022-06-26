@@ -50,7 +50,7 @@ describe('EvitaToken', () => {
   });
 
   describe('Transactions', () => {
-    it('Should transfer tokens between owner and account', async function () {
+    it('Should transfer tokens between owner and account', async () => {
       const amount = 5;
       const ownerBalance = await token.balanceOf(owner.address);
 
@@ -63,7 +63,7 @@ describe('EvitaToken', () => {
       expect(user1Balance).to.equal(amount);
     });
 
-    it('Should transfer tokens between accounts', async function () {
+    it('Should transfer tokens between accounts', async () => {
       const amount = 5;
       await token.transfer(user1.address, amount);
       const user1Balance = await token.balanceOf(user1.address);
@@ -76,7 +76,7 @@ describe('EvitaToken', () => {
       expect(user2Balance).to.equal(amount);
     });
 
-    it("Should fail if sender doesn't have enough tokens", async function () {
+    it("Should fail if sender doesn't have enough tokens", async () => {
       const initialOwnerBalance = await token.balanceOf(owner.address);
 
       await expect(
