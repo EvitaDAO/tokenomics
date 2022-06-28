@@ -21,7 +21,6 @@ contract EvitaNFT is ERC721Upgradeable, OwnableUpgradeable {
         __ERC721_init(name_, symbol_);  //name_ = "EvitaNFT";  symbol_ = "EVN";
 	}
 	
-	
 	function Mint(
         address recipient,
         string memory metadataURI
