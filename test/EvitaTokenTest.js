@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
+const { constants } = require('@openzeppelin/test-helpers');
 
 describe('EvitaToken', () => {
   let token;
@@ -90,6 +91,16 @@ describe('EvitaToken', () => {
   });
 
   describe('Burning', () => {
+    it('Should burn tokens if user sends it to zero address', async () => {
+      const amount = 8;
+      await token.transfer(user1.address, amount);
+      const user1BalanceBeforeBurn = await token.balanceOf(user1.address);
+      await token.connect(user1).transfer(constants.ZERO_ADDRESS, amount);
+      const user1BalanceAfterBurn = await token.balanceOf(user1.address);
+      expect(user1BalanceBeforeBurn).to.equal(amount);
+      expect(user1BalanceAfterBurn).to.equal(0);
+    });
+
     it('Should burn owner tokens', async () => {
       const etherToBurn = 5;
       await token.burn(ethers.utils.parseEther(`${etherToBurn}`));
