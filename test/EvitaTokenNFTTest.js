@@ -60,22 +60,13 @@ describe('EvitaNFT', () => {
       }
     });
 
-    /*
-	it('Should mint NFT and save URL of NFT to existingURIs[linkToMint1]', async () => {
+    it('Should mint NFT and save URL of NFT to existingURIs[linkToMint1]', async () => {
       const linkToMint1 = 'https://example.com/my-inf-1';
-      const mintNum = await token.Mint(
-        user1.address,
-        linkToMint1
-      );
-	  const linkToMintNum = token.existingURIs[linkToMint1];
-	  console.log("num1: ", linkToMintNum);
-	  console.log("num2: ", amount);
-	  console.log("num3: ", mintNum);
-	  //console.log("num4: ", await token.tokenURIs[mintNum]);
-	  console.log("equal? ", amount == linkToMintNum);
+      await token.Mint(user1.address, linkToMint1);
+      const linkToMintNum = await token.existingURIs(linkToMint1);
+      console.log('\n\nlink to mint', linkToMintNum);
       expect(linkToMintNum).to.equal(1);
     });
-	*/
   });
 
   /*
