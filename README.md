@@ -20,3 +20,9 @@ npx hardhat run scripts/deploy.js
 # run tests
 yarn test
 ```
+
+## Deployment
+
+```
+yarn testnet-deploy
+```
