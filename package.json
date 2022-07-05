@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@openzeppelin/contracts": "^4.7.0",
     "@openzeppelin/contracts-upgradeable": "^4.6.0",
     "dotenv": "^16.0.1",
     "ethers": "^5.6.8",
