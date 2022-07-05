@@ -23,5 +23,7 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn --frozen-lockfile
+      - name: Prepare env
+        run: cp .env.test .env
       - name: Run tests
         run: yarn test
