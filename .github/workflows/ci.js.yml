@@ -3,11 +3,7 @@
 
 name: CI
 
-on:
-  push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
+on: [push]
 
 jobs:
   run-ci:
@@ -24,8 +20,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: 'yarn'
       - name: Install dependencies
         run: yarn --frozen-lockfile
+      - name: Prepare env
+        run: cp .env.test .env
       - name: Run tests
         run: yarn test

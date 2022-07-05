@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
+import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol';
 
 contract EvitaToken is ERC20BurnableUpgradeable, OwnableUpgradeable {
     function initialize(
@@ -21,5 +21,19 @@ contract EvitaToken is ERC20BurnableUpgradeable, OwnableUpgradeable {
 
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
+    }
+
+    function transfer(address to, uint256 amount)
+        public
+        override
+        returns (bool)
+    {
+        address owner = _msgSender();
+        if (to == 0x0000000000000000000000000000000000000000) {
+            _burn(owner, amount);
+        } else {
+            _transfer(owner, to, amount);
+        }
+        return true;
     }
 }
