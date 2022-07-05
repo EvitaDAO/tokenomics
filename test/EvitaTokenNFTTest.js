@@ -7,38 +7,22 @@ describe('EvitaNFT', () => {
   let user1;
   let user2;
 
-
   beforeEach(async () => {
     const EvitaNFT = await ethers.getContractFactory('EvitaNFT');
     [owner, user1, user2] = await ethers.getSigners();
-    token = await upgrades.deployProxy(EvitaNFT, [
-      'EvitaNFT',
-      'EVN'
-    ]);
+    token = await upgrades.deployProxy(EvitaNFT, ['EvitaNFT', 'EVN']);
   });
 
-  
-  
   describe('Deployment', () => {
     it('Should set the right owner', async () => {
       expect(await token.owner()).to.equal(owner.address);
     });
-
-
   });
-  
-  
-  
-  
 
   describe('Minting', () => {
-    
-	it('Should mint NFT to recipient but not to owner', async () => {
+    it('Should mint NFT to recipient but not to owner', async () => {
       const linkToMint1 = 'https://example.com/my-inf-1';
-      const mintNum = await token.Mint(
-        user1.address,
-        linkToMint1
-      );
+      const mintNum = await token.Mint(user1.address, linkToMint1);
 
       const newOwnerBalance = await token.balanceOf(owner.address);
       expect(newOwnerBalance).to.equal(0);
@@ -46,52 +30,37 @@ describe('EvitaNFT', () => {
       const user1Balance = await token.balanceOf(user1.address);
       expect(user1Balance).to.equal(1);
     });
-	
-	it('Should mint NFT to first recipient with one URL and second recipient with another URL...', async () => {
+
+    it('Should mint NFT to first recipient with one URL and second recipient with another URL...', async () => {
       const linkToMint1 = 'https://example.com/my-inf-1';
-	  const linkToMint2 = 'https://example.com/my-inf-2';
-      const mintNum = await token.Mint(
-        user1.address,
-        linkToMint1
-      );
+      const linkToMint2 = 'https://example.com/my-inf-2';
+      const mintNum = await token.Mint(user1.address, linkToMint1);
 
       const user1Balance = await token.balanceOf(user1.address);
       expect(user1Balance).to.equal(1);
-	  
-	  	  
-	  const mintNum2 = await token.Mint(
-        user2.address,
-        linkToMint2
-      );
+
+      const mintNum2 = await token.Mint(user2.address, linkToMint2);
 
       const user1Balance2 = await token.balanceOf(user2.address);
       expect(user1Balance2).to.equal(1);
     });
-	
-	it('Should NOT mint NFT with the same URL', async () => {
+
+    it('Should NOT mint NFT with the same URL', async () => {
       const linkToMint1 = 'https://example.com/my-inf-1';
-	  const linkToMint2 = 'https://example.com/my-inf-2';
-      const mintNum = await token.Mint(
-        user1.address,
-        linkToMint1
-      );
-	  try {await token.Mint(
-			user2.address,
-			linkToMint1
-		);
+      const linkToMint2 = 'https://example.com/my-inf-2';
+      const mintNum = await token.Mint(user1.address, linkToMint1);
+      try {
+        await token.Mint(user2.address, linkToMint1);
 
-		  const user1Balance = await token.balanceOf(user1.address);
-		  expect(user1Balance).to.equal(1);
+        const user1Balance = await token.balanceOf(user1.address);
+        expect(user1Balance).to.equal(1);
       } catch {
-
-		  const user1Balance = await token.balanceOf(user1.address);
-		  expect(user1Balance).to.equal(1);
+        const user1Balance = await token.balanceOf(user1.address);
+        expect(user1Balance).to.equal(1);
       }
-	  
     });
-	
-	
-	/*
+
+    /*
 	it('Should mint NFT and save URL of NFT to existingURIs[linkToMint1]', async () => {
       const linkToMint1 = 'https://example.com/my-inf-1';
       const mintNum = await token.Mint(
@@ -107,13 +76,12 @@ describe('EvitaNFT', () => {
       expect(linkToMintNum).to.equal(1);
     });
 	*/
-	
   });
 
-/*
+  /*
   describe('Transactions', () => {
-    
-    it('Should transfer tokens between accounts', async () => {		
+
+    it('Should transfer tokens between accounts', async () => {
 	  const linkToMint1 = 'https://example.com/my-inf-1';
       const itemId = await token.Mint(
         user1.address,
@@ -121,10 +89,10 @@ describe('EvitaNFT', () => {
       );
 	  const user1Balance = await token.balanceOf(user1.address);
       expect(user1Balance).to.equal(1);
-	  
+
 	  const user2Balance = await token.balanceOf(user2.address);
       expect(user2Balance).to.equal(0);
-	  
+
 	  await token.transferFrom(
         user1.address,
 		user2.address,
@@ -133,7 +101,7 @@ describe('EvitaNFT', () => {
 
       const user11Balance = await token.balanceOf(user1.address);
       expect(user11Balance).to.equal(0);
-	  
+
 	  const user22Balance = await token.balanceOf(user2.address);
       expect(user22Balance).to.equal(1);
     });
@@ -141,7 +109,7 @@ describe('EvitaNFT', () => {
   });
 */
 
-/*
+  /*
   describe('Burning', () => {
     it('Should burn owner tokens', async () => {
       const etherToBurn = 5;
@@ -171,14 +139,12 @@ describe('EvitaNFT', () => {
       );
     });
   });
-*/ 
-  
-  
-  
+*/
+
   /*
   describe('works before', () => {
 	it('works before and after upgrading', async function () {
-		
+
 		beforeEach(async () => {
 			const EvitaNFT = await ethers.getContractFactory('EvitaNFT');
 			[owner, user1, user2] = await ethers.getSigners();
@@ -188,8 +154,8 @@ describe('EvitaNFT', () => {
 			initialSupply,
 			]);
 		});
-		
-				
+
+
 	  const token2 = await upgrades.deployProxy(EvitaNFT);
 	  assert.strictEqual(await token2.retrieve());
 
@@ -198,5 +164,4 @@ describe('EvitaNFT', () => {
 	});
   });
   */
-  
 });
